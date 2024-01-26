@@ -23,5 +23,4 @@ jobs:
       - name: CDK Deploy
         uses: koboriakira/gh-actions/aws/deploy_cdk@main
         with:
-          workdir: cdk
           aws-role: ${{ secrets.AWS_ROLE }}
