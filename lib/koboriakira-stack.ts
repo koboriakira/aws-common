@@ -8,6 +8,7 @@ import {
   aws_s3 as s3,
   aws_cloudfront as cloudfront,
   aws_cloudfront_origins as origins,
+  aws_iam as iam,
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
 
@@ -20,6 +21,21 @@ export class KoboriAkiraStack extends Stack {
       bucketName: "koboriakira-bucket",
       removalPolicy: RemovalPolicy.RETAIN,
     });
+
+    // IAMユーザの作成
+    const bucketMaintainer = new iam.User(this, "BucketMaintainer", {
+      userName: "koboriakira-bucket-maintainer",
+    });
+
+    // バケットに対するアクセス権限を付与
+    const bucketPolicy = new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: ["s3:*"],
+      resources: [bucket.bucketArn, `${bucket.bucketArn}/*`],
+    });
+
+    // ユーザにポリシーをアタッチ
+    bucketMaintainer.addToPolicy(bucketPolicy);
 
     // カスタムキャッシュポリシーの作成
     const myCachePolicy = new cloudfront.CachePolicy(this, "CachePolicy", {
