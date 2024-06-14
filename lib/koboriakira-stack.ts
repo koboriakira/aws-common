@@ -18,7 +18,7 @@ export class KoboriAkiraStack extends Stack {
 
     // S3バケットを作成
     const bucket = new s3.Bucket(this, "Bucket", {
-      bucketName: "koboriakira-bucket",
+      bucketName: process.env.COMMON_BUCKET_NAME, // koboriakira-bucket
       removalPolicy: RemovalPolicy.RETAIN,
     });
 

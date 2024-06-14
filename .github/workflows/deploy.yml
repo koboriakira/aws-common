@@ -11,6 +11,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: production
     permissions:
       id-token: write
       contents: read
@@ -24,3 +25,7 @@ jobs:
         uses: koboriakira/gh-actions/aws/deploy_cdk@main
         with:
           aws-role: ${{ secrets.AWS_ROLE }}
+        env:
+          SLACK_KOBORI_WORKSPACE_ID: ${{ secrets.SLACK_KOBORI_WORKSPACE_ID }}
+          SLACK_KOBORI_NOTICE_CHANNEL_ID: ${{ secrets.SLACK_KOBORI_NOTICE_CHANNEL_ID }}
+          COMMON_BUCKET_NAME: ${{ secrets.COMMON_BUCKET_NAME }}
